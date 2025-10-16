@@ -11,11 +11,9 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user
   end
 
   def show
-    @user
   end
 
   #post /users 
@@ -35,24 +33,26 @@ class UsersController < ApplicationController
       redirect_to new_user_path, alert: "An unexpected error occurred. Please try again."
   end
 
-  #patch/put /users/:id
+  #patch/put /user/:id
   def update
-    updated_user = User.find(params[:id])
-    @user = Users::UserUsecase.new(user_params)
+    @user = User.find(params[:id])
+    usecase = Users::UserUsecase.new(user_params)
 
-    if @user.update(user_params)
+    result = usecase.update(@user)
+
+    if result[:status] == :updated
       redirect_to users_path, notice: "User updated successfully."
     else
-      flash[:errors] = @user.errors.full_messages
+      flash[:errors] = result[:errors]
       redirect_to edit_user_path(@user), status: :unprocessable_entity
     end
-
-    rescue StandardError => e
-      logger.error "Error updating user: #{e.message}"
-      redirect_to edit_user_path(@user), alert: "An unexpected error occurred. Please try again."
+  rescue StandardError => e
+    logger.error "Error updating user: #{e.message}"
+    redirect_to edit_user_path(@user), alert: "An unexpected error occurred. Please try again."
   end
 
-  #delete /users/:id
+
+  #delete /user/:id
   def destroy
       @deleted_user = Users::UserUsecase.new(nil)
       if @deleted_user.destroy(@user)

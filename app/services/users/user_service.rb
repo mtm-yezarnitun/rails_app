@@ -13,14 +13,14 @@ module Users
       end
     end
 
-    def update(updated_user)
-      user = User.new(@params)
-      if updated_user.update(@params)
-        return {user: user, status: :created}
+    def update(user)
+      if user.update(@params.except(:id))
+        {user: user, status: :updated}
       else
-        return {user: user, status: :unprocessable_entity}
+        {user: user, errors: user.errors.full_messages, status: :unprocessable_entity}
       end
     end
+
 
     def destroy(deleted_user)
       user = User.find(deleted_user[:id])

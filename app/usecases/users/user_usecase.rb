@@ -23,23 +23,17 @@ module Users
             end
         end
 
-        def update(updated_user)
-            begin
-                user_update_service = Users::UserService.new(@params)
-                response = user_update_service.update(updated_user)
-                if @form.valid?
-                    response = user_update_service.update
-                    if response[:status] == :updated
-                        return {user: response[:user], status: :updated}
-                    end
-                    else
-                        @user = User.new(@form.attributes)
-                    return {user: @user, errors: @form.errors, status: :unprocessable_entity}
-                end
-            rescue StandardError => errors
-                return {user: @user, errors: errors.message, status: :unprocessable_entity}
-            end
+        def update(user)
+            return {user: user, errors: "Invalid form", status: :unprocessable_entity} unless @form.valid?
+
+            service = Users::UserService.new(@form.attributes)
+            response = service.update(user) 
+
+            response
+        rescue StandardError => e
+            {user: user, errors: e.message, status: :unprocessable_entity}
         end
+
 
         def destroy(deleted_user)
             begin
