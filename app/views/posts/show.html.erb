@@ -2,4 +2,5 @@
 <p>Message : <%= @post.message %></p>
 <p>Category : <%= @post.category.name %></p>
 <p>Created On: <%= @post.formatted_created_at %></p>
+<p><em>By: <%= @post.user.name %></em></p>
 <%= link_to "Back to Posts", posts_path %>

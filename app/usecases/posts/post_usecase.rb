@@ -1,14 +1,15 @@
 require_relative '../../forms/posts/post_form.rb'
 module Posts
     class PostUsecase < BaseUseCase
-        def initialize(params)
+        def initialize(params , user = nil)
             @params = params
             @form = Posts::PostForm.new(params)
+            @user = user
         end
 
         def create
             begin
-                post_create_service = Posts::PostService.new(@form.attributes)
+                post_create_service = Posts::PostService.new(@form.attributes,@user)
                 if @form.valid?
                     response = post_create_service.create
                     if response[:status] == :created

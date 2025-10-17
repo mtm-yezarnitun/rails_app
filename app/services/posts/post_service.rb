@@ -1,11 +1,13 @@
 module Posts
   class PostService
-    def initialize(params)
+    def initialize(params , user)
       @params = params
+      @user = user
     end
 
     def create
       post = Post.new(@params)
+      post.user = @user
       if post.save
         return {post: post, status: :created}
       else

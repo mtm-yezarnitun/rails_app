@@ -12,6 +12,12 @@
 
   <body>
     <nav>
+      <% if current_user %>
+        Logged in as <%= current_user.name %> |
+        <%= button_to "Logout", logout_path, method: :delete %> 
+      <% else %>
+        <%= link_to "Login", login_path %>
+      <% end %>
       <%= link_to "All Users", users_path %>
       <%= link_to "All Posts", posts_path %>
       <%= link_to "All Categories", categories_path %>

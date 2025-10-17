@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     @user = Users::UserUsecase.new(user_params)
     response = @user.create
       if response[:status] == :created
-        format.html { redirect_to users_path, notice: t('messages.common.create_success', data: "User") }
+        redirect_to users_path, notice: t('messages.common.create_success', data: "User")
       else
         flash[:errors] = response[:errors]
         redirect_to new_user_path, status: :unprocessable_entity

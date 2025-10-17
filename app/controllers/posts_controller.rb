@@ -1,9 +1,12 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show update edit destroy ]
   before_action :set_categories, only: %i[ new show update edit destroy ]
+  before_action :require_login, only: [:new, :create,:update ,:edit, :destroy]
+  before_action :authorize_post_owner, only: [:edit, :update, :destroy]
+
   #get /posts
   def index
-    @posts = Post.includes(:category).all.decorate
+    @posts = Post.includes(:category, :user).all.decorate
   end
 
   def new
@@ -20,7 +23,7 @@ class PostsController < ApplicationController
 
   #post /posts 
   def create
-    @post = Posts::PostUsecase.new(post_params)
+    @post = Posts::PostUsecase.new(post_params , current_user)
     response = @post.create
 
     if response[:status] == :created
@@ -77,5 +80,11 @@ class PostsController < ApplicationController
     
     def post_params
       params.require(:post).permit(:title, :message, :category_id)
+    end
+
+    def authorize_post_owner
+      unless @post.user_id == current_user.id
+        redirect_to posts_path, alert: "You are not authorized to perform this action."
+      end
     end
 end

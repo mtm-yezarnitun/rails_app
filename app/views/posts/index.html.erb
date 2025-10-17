@@ -7,9 +7,10 @@
     <%= render post %>
     <p>
       <%= link_to "Show this post", post_path(post) %>
-      
-      <%= link_to "Edit", edit_post_path(post) %>
-      <%= button_to "Delete", post_path(post), method: :delete %> 
+      <% if current_user && post.user_id == current_user.id %>
+        <%= link_to "Edit", edit_post_path(post) %> |
+        <%= button_to "Delete", post_path(post), method: :delete %> 
+      <% end %>
     </p>
   <% end %>
 </div>
