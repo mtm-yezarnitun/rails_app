@@ -13,7 +13,7 @@ gem "jbuilder"
 
 gem "fiddle"
 gem "virtus"
-
+gem "draper"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 

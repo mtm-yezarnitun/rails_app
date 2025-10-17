@@ -1,0 +1,17 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Categories</h1>
+
+<div id="categories">
+  <% @categories.each do |category| %>
+    <%= render category %>
+    <p>
+      <%= link_to "Show this category", category_path(category) %>
+      <%= link_to "Edit", edit_category_path(category) %> |
+      <%= button_to "Delete", category_path(category), method: :delete %>
+
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New category", new_category_path %>

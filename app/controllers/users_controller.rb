@@ -20,14 +20,12 @@ class UsersController < ApplicationController
   def create
     @user = Users::UserUsecase.new(user_params)
     response = @user.create
-
-    if response[:status] == :created
-      redirect_to users_path, notice: t('messages.common.create_success', data: "User")
-    else
-      flash[:errors] = response[:errors]
-      redirect_to new_user_path, status: :unprocessable_entity
-    end
-
+      if response[:status] == :created
+        format.html { redirect_to users_path, notice: t('messages.common.create_success', data: "User") }
+      else
+        flash[:errors] = response[:errors]
+        redirect_to new_user_path, status: :unprocessable_entity
+      end
     rescue StandardError => e
       logger.error "There is something wrong in user create. #{e.message}"
       redirect_to new_user_path, alert: "An unexpected error occurred. Please try again."
