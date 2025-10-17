@@ -23,7 +23,7 @@ module Posts
             end
         end
 
-      def update(post)
+        def update(post)
             return {post: post, errors: "Invalid form", status: :unprocessable_entity} unless @form.valid?
 
             service = Posts::PostService.new(@form.attributes)

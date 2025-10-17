@@ -34,7 +34,6 @@ module Users
             {user: user, errors: e.message, status: :unprocessable_entity}
         end
 
-
         def destroy(deleted_user)
             begin
                 user_delete_service = Users::UserService.new(@params)

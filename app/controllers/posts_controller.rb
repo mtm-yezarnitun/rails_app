@@ -1,9 +1,9 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show update edit destroy ]
-  
+  before_action :set_categories, only: %i[ new show update edit destroy ]
   #get /posts
   def index
-    @posts = Post.all
+    @posts = Post.includes(:category).all
   end
 
   def new
@@ -70,8 +70,12 @@ class PostsController < ApplicationController
     def set_post
       @post = Post.find(params[:id])
     end
+
+    def set_categories
+      @categories = Category.all
+    end
     
     def post_params
-      params.require(:post).permit(:title, :message)
+      params.require(:post).permit(:title, :message, :category_id)
     end
 end

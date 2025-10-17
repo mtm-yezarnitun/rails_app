@@ -15,9 +15,9 @@ module Posts
 
     def update(post)
       if post.update(@params.except(:id))
-        {post: post, status: :updated}
+        return {post: post, status: :updated}
       else
-        {post: post, errors: post.errors.full_messages, status: :unprocessable_entity}
+        return {post: post, errors: post.errors.full_messages, status: :unprocessable_entity}
       end
     end
 
