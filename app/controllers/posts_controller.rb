@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_categories, only: %i[ new show update edit destroy ]
   #get /posts
   def index
-    @posts = Post.includes(:category).all
+    @posts = Post.includes(:category).all.decorate
   end
 
   def new
@@ -68,7 +68,7 @@ class PostsController < ApplicationController
 
   private
     def set_post
-      @post = Post.find(params[:id])
+      @post = Post.find(params[:id]).decorate
     end
 
     def set_categories
